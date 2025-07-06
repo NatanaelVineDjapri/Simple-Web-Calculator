@@ -12,9 +12,9 @@ function appendValue(value){
 }
 
 function clearValueDisplay(){
-    // inputDisplay = "";
-    // numberOne = null;
-    // operatorCal = null;
+    inputDisplay = "";
+    numberOne = null;
+    operatorCal = null;
     display.value="";
 }
 
@@ -72,6 +72,7 @@ function operatorSelector(string){
     }
     return operator;
 }
+
 function calculatorResult(){
     
     const number = numberSelector(inputDisplay);
@@ -81,22 +82,52 @@ function calculatorResult(){
         return;
     }
 
-    let result = number[0];
+    let realNumber = [];
+    let realOperator = [];
 
-    for (let i = 0; i<operator.length;i++){
-        const optor = operator[i];
-        const num = number[i+1];
+    for(let i = 0;i<operator.length;i++){
+        if (operator[i] === "*" || operator[i] === "/"){
 
-        if (optor === "+"){
-            result += num;
-        } else if(optor === "-"){
-            result -= num;
-        } else if(optor === "*"){
-            result *= num;
-        } else if(optor === "/"){
-            result /= num;
-        }        
+            let result;
+
+            if(operator[i]==="*"){
+                result = number[i]*number[i+1];
+            } else {
+                result = number[i]/number[i+1];
+            }
+
+            number.splice(i,2,result); //buat ganti kedua angkanya jadi
+            operator.splice(i,1) //hapus operator 1 buah
+
+            i =-1 //buat reset array karna tdi di splice
+        }
     }
+
+    let result = number[0];
+    for(let i = 0;i<operator.length;i++){
+        if(operator[i] === "+"){
+            result += number[i+1];
+        } else if (operator[i] === "-"){
+            result -= number[i+1];
+        }
+    }
+
+    // let result = number[0];
+
+    // for (let i = 0; i<operator.length;i++){
+    //     const optor = operator[i];
+    //     const num = number[i+1];
+
+    //     if (optor === "+"){
+    //         result += num;
+    //     } else if(optor === "-"){
+    //         result -= num;
+    //     } else if(optor === "*"){
+    //         result *= num;
+    //     } else if(optor === "/"){
+    //         result /= num;
+    //     }        
+    // }
         
     display.value = result;
     inputDisplay = result.toString();
